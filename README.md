@@ -39,6 +39,10 @@ For the easiest path, also install Android Studio:
 
 `https://developer.android.com/studio`
 
+If you want to install the app from the command line instead of through Android Studio, you also need `adb` installed on your computer.
+
+`adb` is part of Android platform tools and is usually installed along with Android Studio.
+
 ## Download The Project
 
 Repo URL:
@@ -102,6 +106,8 @@ Android Studio will:
 
 Use this only if you are comfortable with terminal commands.
 
+Before using this option, make sure `adb` is installed.
+
 ### Step 1: Build The App
 
 Open a terminal in the project folder and run:
@@ -151,6 +157,8 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 ## Option 3: Install A Prebuilt APK
 
 If someone already built the APK and sent it to you, you do not need to build the project yourself.
+
+Before using this option, make sure `adb` is installed.
 
 You can install it with:
 
