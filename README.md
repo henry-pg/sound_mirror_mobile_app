@@ -1,27 +1,197 @@
 # Bluetooth Classic Scanner
 
-A native Android app in Kotlin that scans for nearby Bluetooth Classic devices and displays:
+This project is a simple Android app that scans for Bluetooth Classic devices.
 
-- Paired devices from `bondedDevices`
-- Nearby discoverable Bluetooth Classic devices found through `BluetoothAdapter.startDiscovery()`
+It shows:
 
-The app uses:
+- paired Bluetooth devices already saved on the phone
+- nearby discoverable Bluetooth Classic devices found during a scan
 
-- Kotlin
-- Jetpack Compose
-- MVVM
-- Coroutines and `StateFlow`
-- Native Android Bluetooth APIs
+## Important First Note
 
-## Requirements
+This GitHub repo contains the source code.
 
-- Android Studio Koala or newer
-- Android SDK installed
-- A real Android phone
+It does not contain a built APK file in git.
 
-Bluetooth Classic discovery should be tested on a real device. Emulators generally do not support this workflow reliably.
+So if you want to test the app on a phone, you must do one of these:
 
-## Project Structure
+1. Build the APK from this repo
+2. Get an APK file from someone who already built it
+
+## Easiest Way For Most People
+
+If you do not already know Android development tools, use Android Studio.
+
+Android Studio can:
+
+- download the Android tools you need
+- build the app
+- install the app onto your phone
+
+## What You Need
+
+- an Android phone
+- a USB cable
+- a computer
+- this project downloaded from GitHub
+
+For the easiest path, also install Android Studio:
+
+`https://developer.android.com/studio`
+
+## Download The Project
+
+Repo URL:
+
+`https://github.com/henry-pg/sound_mirror_mobile_app`
+
+You can either:
+
+- download the repo ZIP from GitHub and extract it
+- or clone it with git
+
+## Option 1: Build And Install With Android Studio
+
+This is the recommended path if you are not familiar with command-line Android tools.
+
+### Step 1: Install Android Studio
+
+Download and install Android Studio from:
+
+`https://developer.android.com/studio`
+
+During installation, allow it to install the Android SDK and related tools.
+
+### Step 2: Open The Project
+
+1. Open Android Studio.
+2. Click `Open`.
+3. Select the project folder you downloaded from GitHub.
+4. Wait for Android Studio to finish syncing the project.
+
+### Step 3: Turn On Developer Mode On The Phone
+
+On the Android phone:
+
+1. Open `Settings`.
+2. Open `About phone`.
+3. Find `Build number`.
+4. Tap `Build number` 7 times.
+5. Go back to `Settings`.
+6. Open `Developer options`.
+7. Turn on `USB debugging`.
+
+### Step 4: Connect The Phone
+
+1. Connect the phone to the computer with a USB cable.
+2. If the phone shows a prompt asking whether to allow USB debugging, approve it.
+
+### Step 5: Run The App
+
+1. In Android Studio, find the device selector near the top of the window.
+2. Select your phone.
+3. Click the `Run` button.
+
+Android Studio will:
+
+- build the app
+- install it on the phone
+- launch it
+
+## Option 2: Build The APK Yourself With The Command Line
+
+Use this only if you are comfortable with terminal commands.
+
+### Step 1: Build The App
+
+Open a terminal in the project folder and run:
+
+```bash
+./gradlew assembleDebug
+```
+
+If the Android SDK is not configured on your machine, you may need to install Android Studio first or set Android SDK environment variables.
+
+If the build succeeds, the APK will be created here:
+
+```text
+app/build/outputs/apk/debug/app-debug.apk
+```
+
+### Step 2: Install The App On The Phone
+
+You also need `adb`, which comes with Android platform tools.
+
+If you installed Android Studio, you probably already have it.
+
+Then:
+
+1. Turn on `USB debugging` on the phone
+2. Connect the phone by USB
+3. Approve the USB debugging prompt on the phone
+4. Run:
+
+```bash
+adb devices
+```
+
+If your phone appears in the list, install the app:
+
+```bash
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
+
+If you get a signature conflict error, run:
+
+```bash
+adb uninstall com.example.bluetoothclassicscanner
+adb install app/build/outputs/apk/debug/app-debug.apk
+```
+
+## Option 3: Install A Prebuilt APK
+
+If someone already built the APK and sent it to you, you do not need to build the project yourself.
+
+You can install it with:
+
+```bash
+adb install -r path/to/app-debug.apk
+```
+
+You still need:
+
+- a phone with `USB debugging` enabled
+- `adb` installed on your computer
+
+## First-Time App Setup On The Phone
+
+When the app opens:
+
+1. Allow the Bluetooth permission prompts
+2. Turn on Bluetooth if it is off
+3. If the phone is Android 11 or lower, make sure Location services are also turned on
+
+## How To Test The App
+
+1. Open the app
+2. Confirm the title says `Bluetooth Classic Scanner`
+3. Check the Bluetooth status section
+4. Check the permission status section
+5. Confirm paired devices appear if the phone already has any
+6. Tap `Start Scan`
+7. Watch the nearby devices list for discoverable Bluetooth Classic devices
+8. Tap `Stop Scan`
+9. Confirm the app does not crash if Bluetooth is off or permissions are denied
+
+## What To Expect
+
+- The app scans Bluetooth Classic devices only
+- It does not use BLE-only scanning APIs
+- Not every nearby Bluetooth device will appear
+- Only discoverable Bluetooth Classic devices should be expected to show up
+- Testing should be done on a real Android phone, not an emulator
+
+## Main Source Files
 
 - `app/src/main/java/com/example/bluetoothclassicscanner/MainActivity.kt`
 - `app/src/main/java/com/example/bluetoothclassicscanner/BluetoothViewModel.kt`
@@ -29,111 +199,3 @@ Bluetooth Classic discovery should be tested on a real device. Emulators general
 - `app/src/main/java/com/example/bluetoothclassicscanner/BluetoothPermissionHandler.kt`
 - `app/src/main/java/com/example/bluetoothclassicscanner/BluetoothDeviceUiModel.kt`
 - `app/src/main/java/com/example/bluetoothclassicscanner/BluetoothScannerScreen.kt`
-
-## Open The Project
-
-1. Open Android Studio.
-2. Choose `Open`.
-3. Select the project root folder.
-
-4. Let Android Studio sync Gradle.
-
-## Build The App
-
-From Android Studio:
-
-1. Wait for Gradle sync to finish.
-2. Use `Build > Make Project`.
-
-From the command line:
-
-```bash
-./gradlew assembleDebug
-```
-
-If your Android SDK is not already configured in your shell or Android Studio, set `ANDROID_SDK_ROOT` and `ANDROID_HOME` first.
-
-The debug APK is generated at:
-
-```text
-app/build/outputs/apk/debug/app-debug.apk
-```
-
-## Install On A Test Phone
-
-### Option 1: Android Studio
-
-1. Enable Developer Options on the phone.
-2. Enable `USB debugging`.
-3. Connect the phone by USB.
-4. Accept the debugging prompt on the phone.
-5. In Android Studio, select the connected device.
-6. Click `Run`.
-
-Android Studio will build and install the app automatically.
-
-### Option 2: ADB
-
-Enable `USB debugging`, connect the phone, then run:
-
-```bash
-~/Library/Android/sdk/platform-tools/adb devices
-```
-
-If the device appears, install the app:
-
-```bash
-adb install -r app/build/outputs/apk/debug/app-debug.apk
-```
-
-If you get a signature conflict, uninstall first:
-
-```bash
-adb uninstall com.example.bluetoothclassicscanner
-adb install app/build/outputs/apk/debug/app-debug.apk
-```
-
-## Runtime Notes
-
-On first launch:
-
-1. Grant the requested Bluetooth permissions.
-2. If testing on Android 11 or lower, make sure Location services are enabled.
-3. Make sure Bluetooth is enabled in system settings.
-
-Nearby devices found through discovery are limited to discoverable Bluetooth Classic devices. Not every nearby Bluetooth device will appear.
-
-## Basic Test Plan
-
-1. Launch the app.
-2. Confirm the app shows whether Bluetooth is supported and enabled.
-3. Confirm paired devices appear in the `Paired devices` section.
-4. Tap `Start Scan`.
-5. Confirm the scanning state changes.
-6. Confirm nearby discoverable Bluetooth Classic devices appear in `Discovered nearby devices`.
-7. Tap `Stop Scan`.
-8. Confirm scanning stops without a crash.
-9. Disable Bluetooth and reopen the app to verify the disabled-state message.
-10. Deny permissions and confirm the app does not crash.
-
-## Permissions
-
-Android 12 and higher:
-
-- `BLUETOOTH_SCAN`
-- `BLUETOOTH_CONNECT`
-
-Android 11 and lower:
-
-- `BLUETOOTH`
-- `BLUETOOTH_ADMIN`
-- `ACCESS_FINE_LOCATION`
-
-`BLUETOOTH_ADVERTISE` is not used in this app.
-
-## Known Limitations
-
-- This app scans Bluetooth Classic devices only.
-- BLE scanning APIs are intentionally not used.
-- iOS is not supported.
-- Discovery results depend on device visibility and OS behavior.
