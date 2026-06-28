@@ -15,10 +15,22 @@ It does not contain a built APK file in git.
 
 So if you want to test the app on a phone, you must do one of these:
 
-1. Build the APK from this repo
-2. Get an APK file from someone who already built it
+1. Download the APK from the GitHub release page
+2. Build the APK from this repo
+3. Get an APK file from someone who already built it
+
+Current release page:
+
+`https://github.com/henry-pg/sound_mirror_mobile_app/releases/tag/v0.1.0`
 
 ## Easiest Way For Most People
+
+If you only want to test the app on a phone, the simplest option is:
+
+1. download the APK from the GitHub release page
+2. install it on your phone with `adb`
+
+If you want to build the app yourself, use Android Studio.
 
 If you do not already know Android development tools, use Android Studio.
 
@@ -54,7 +66,66 @@ You can either:
 - download the repo ZIP from GitHub and extract it
 - or clone it with git
 
-## Option 1: Build And Install With Android Studio
+## Option 1: Download The APK From The Release Page
+
+This is the best option for someone who only wants to test the app.
+
+Release page:
+
+`https://github.com/henry-pg/sound_mirror_mobile_app/releases/tag/v0.1.0`
+
+### Step 1: Download The APK
+
+1. Open the release page
+2. Under the release assets, download `app-debug.apk`
+
+### Step 2: Make Sure `adb` Is Installed
+
+To install the APK from a computer, you need `adb`.
+
+`adb` is part of Android platform tools.
+
+If you already installed Android Studio, you probably already have it.
+
+### Step 3: Turn On USB Debugging On The Phone
+
+On the Android phone:
+
+1. Open `Settings`
+2. Open `About phone`
+3. Find `Build number`
+4. Tap `Build number` 7 times
+5. Go back to `Settings`
+6. Open `Developer options`
+7. Turn on `USB debugging`
+
+### Step 4: Connect The Phone
+
+1. Connect the phone to the computer with a USB cable
+2. Approve the USB debugging prompt on the phone
+
+### Step 5: Install The APK
+
+First check that the device is visible:
+
+```bash
+adb devices
+```
+
+Then install the APK you downloaded:
+
+```bash
+adb install -r path/to/app-debug.apk
+```
+
+If you get a signature conflict error, run:
+
+```bash
+adb uninstall com.example.bluetoothclassicscanner
+adb install path/to/app-debug.apk
+```
+
+## Option 2: Build And Install With Android Studio
 
 This is the recommended path if you are not familiar with command-line Android tools.
 
@@ -102,7 +173,7 @@ Android Studio will:
 - install it on the phone
 - launch it
 
-## Option 2: Build The APK Yourself With The Command Line
+## Option 3: Build The APK Yourself With The Command Line
 
 Use this only if you are comfortable with terminal commands.
 
@@ -154,7 +225,7 @@ adb uninstall com.example.bluetoothclassicscanner
 adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
-## Option 3: Install A Prebuilt APK
+## Option 4: Install A Prebuilt APK From Somewhere Else
 
 If someone already built the APK and sent it to you, you do not need to build the project yourself.
 
